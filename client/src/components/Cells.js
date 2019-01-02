@@ -9,7 +9,7 @@ class Cells extends Component {
   render() {
     const { days } = this.props;
     return (
-      <Card.Group itemsPerRow={7} className="container">
+      <Card.Group itemsPerRow={7} className="">
         {days.map((day, i) => (
           <Card key={i}>
             <Card.Content>

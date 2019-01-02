@@ -33,7 +33,7 @@ class App extends Component {
     currentMonthScore: {
       startDate: '',
       total: { book: 0, food: 0, heart: 0, weight: 0 },
-      streak: { book: 0, food: 0, heart: 0, weight: 0 },
+      streak: {},
       LongestStreak: { book: 0, food: 0, heart: 0, weight: 0 }
     },
     prevMonthScore: {
@@ -48,9 +48,7 @@ class App extends Component {
   getDays = async (renderedDays, startDate) => {
     const url = `/api/resolution/${startDate}`;
     const { data } = await axios.get(url);
-    console.log('data from axios', data);
     let days = renderedDays;
-    console.log('days', days);
     for (let i = 0; i < data.length; i++) {
       let index = days.findIndex(d => d.formattedDate === data[i].day);
       if (index !== -1) {
@@ -74,7 +72,6 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    console.log('cdm');
     const { currentMonth, selectedDate } = this.state;
     const prevMonth = dateFns.subMonths(this.state.currentMonth, 1);
     const renderedDays = await daysRendering(currentMonth, selectedDate);
@@ -87,6 +84,12 @@ class App extends Component {
           heart: totalBoolean(dbUpdated, 'heart'),
           food: totalBoolean(dbUpdated, 'food'),
           weight: totalBoolean(dbUpdated, 'weight')
+        },
+        streak: {
+          book: streakBoolean(dbUpdated, 'book'),
+          heart: streakBoolean(dbUpdated, 'heart'),
+          food: streakBoolean(dbUpdated, 'food'),
+          weight: streakBoolean(dbUpdated, 'weight')
         }
       }
     });
@@ -121,7 +124,6 @@ class App extends Component {
       dateFns.format(startDate, 'YYYY-MM-DD') + 'T00:00:00.000Z';
     const renderedDays = await daysRendering(newMonth);
     const dbUpdated = await this.getDays(renderedDays, formattedStartDate);
-    console.log('db updated', dbUpdated);
     this.setState({
       currentMonth: newMonth,
       prevMonth,
@@ -138,9 +140,6 @@ class App extends Component {
     days.splice(index, 1, newDay);
     this.setState({ days });
     await axios.post('/api/resolution', newDay);
-
-    // const {book, heart, food, weight} = this.state.total;
-    const count = totalBoolean(days, 'heart');
     const streakCount = streakBoolean(days, 'heart');
     this.setState({
       currentMonthScore: {
@@ -149,11 +148,15 @@ class App extends Component {
           heart: totalBoolean(days, 'heart'),
           food: totalBoolean(days, 'food'),
           weight: totalBoolean(days, 'weight')
+        },
+        streak: {
+          book: streakBoolean(days, 'book'),
+          heart: streakBoolean(days, 'heart'),
+          food: streakBoolean(days, 'food'),
+          weight: streakBoolean(days, 'weight')
         }
       }
     });
-    console.log('heart count', count);
-    console.log('streak count', streakCount);
   };
 
   render() {
@@ -167,20 +170,22 @@ class App extends Component {
           onPrevMonth={this.handlePrevMonth}
           onNextMonth={this.handleNextMonth}
         />
-        <Grid>
-          <Grid.Column width={13}>
-            <Days month={month} />
-            <Cells
-              selectedDate={selectedDate}
-              currentMonth={currentMonth}
-              days={days}
-              handleResolution={this.handleResolution}
-            />
-          </Grid.Column>
-          <Grid.Column width={3}>
-            <History score={currentMonthScore} />
-          </Grid.Column>
-        </Grid>
+        <div style={{ marginLeft: '40px' }}>
+          <Grid>
+            <Grid.Column width={13}>
+              <Days month={month} />
+              <Cells
+                selectedDate={selectedDate}
+                currentMonth={currentMonth}
+                days={days}
+                handleResolution={this.handleResolution}
+              />
+            </Grid.Column>
+            <Grid.Column width={3}>
+              <History score={currentMonthScore} />
+            </Grid.Column>
+          </Grid>
+        </div>
       </div>
     );
   }

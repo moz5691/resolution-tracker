@@ -16,8 +16,7 @@ export default (data, key) => {
         currentStreak = 0;
       }
     }
-    console.log('currentStreak', currentStreak, highestStreak);
   });
-  console.log('currentStreak', currentStreak, highestStreak);
+
   return { currentStreak, highestStreak };
 };
