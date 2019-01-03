@@ -61,12 +61,19 @@ module.exports = function(app) {
 };
 ```
 
-Note: make sure that you install **http-proxy-middleware** , in **client** directory, **npm i http-proxy-middleware --save-dev**  
-If proxy runs successfully, you should see a message like below
+Note: make sure that you install **http-proxy-middleware** , in **client** directory, **npm i http-proxy-middleware --save-dev**
+
+If proxy runs successfully, you should see a message like below:
+
+```javascript
 Listen on PORT 5000!!
+
 [0] mongodb runs
-[1][hpm] Proxy created: /api/_ -> http://localhost:5000  
+
+[1][hpm] Proxy created: /api/_ -> http://localhost:5000
+
 [1][hpm] Proxy created: /api/resolution/_ -> http://localhost:5000
+```
 
 **Screenshot**
 ![alt text](misc/screenshot.png 'screenshot')
