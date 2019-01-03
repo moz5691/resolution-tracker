@@ -4,7 +4,7 @@
 
 **npm install**
 
-**npm run dev** --> this is to run both React Client and Express Server (refer package.json).
+**npm run dev** --> this is to run both React Client and Express Server (refer package.json). Make sure that **concurrently** is added in **package.json** in server (root module, not client).
 
 ### Note:
 
@@ -20,9 +20,9 @@ module.exports = {
 };
 ```
 
-**Seeding DB** seeding to DB is not necessary. Calendar format is self-rendered. DB stores only tracking info. Document is create for days with tracking info.
+**Seeding DB** : Seeding initial data to DB is not necessary. Calendar format is self-rendered by **daysRendering.js**. DB stores only tracking info such that its document is created for the days with holding tracking info.
 
-### For Heroku Deployment
+### For Heroku Deployment,
 
 In **package.json**
 
